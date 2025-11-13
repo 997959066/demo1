@@ -40,12 +40,10 @@ public class ExcelExpander {
                         String qValue = getCellValueAsString(qCell);
 
                         // 条件：E列有值，Q列有值且包含多个系统类型&& !qValue.equals("system type")
-                        if (isNotBlank(eValue) && isNotBlank(qValue) ) {
-                            // 拆分 Q 列，如 "Android & Front-End & QA" → ["Android", "Front-End", "QA"]
-                            List<String> systemTypes = Arrays.stream(qValue.split("&"))
-                                    .map(String::trim)
-                                    .filter(s -> !s.isEmpty())
-                                    .collect(Collectors.toList());
+                        if (isNotBlank(eValue) && isNotBlank(qValue) && !qValue.equals("system type")) {
+                            qValue=qValue+" & Quality Assurance & Product Manager & Delivery Manager & Product Designer";
+                            // 拆分 Q 列，如 "Android & Front-End & QA" → ["Android Developer", "Front-End Developer", "QA"]
+                            List<String> systemTypes = Arrays.stream(qValue.split("&")).map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
                             if (!systemTypes.isEmpty()) {
                                 // 获取原始行所有列的数据（列索引 -> 值）
                                 Map<Integer, String> originalValues = getRowValuesAsMap(row);
@@ -76,8 +74,24 @@ public class ExcelExpander {
 
             // 创建表头
             Row headerRow = outputSheet.createRow(0);
-            headerRow.createCell(0).setCellValue("序号");
-            headerRow.createCell(1).setCellValue("系统类型");
+            headerRow.createCell(0).setCellValue("EPIC Story");
+            headerRow.createCell(1).setCellValue("Task / Description");
+            headerRow.createCell(2).setCellValue("APEX/OTE");
+            headerRow.createCell(3).setCellValue("Release");
+            headerRow.createCell(4).setCellValue("Task / Description");
+            headerRow.createCell(5).setCellValue("Vendor/SHDR");
+            headerRow.createCell(6).setCellValue("Cost Type");
+            headerRow.createCell(7).setCellValue("Asset Function"); // In-House
+            headerRow.createCell(8).setCellValue("Team");
+            headerRow.createCell(9).setCellValue("Role list");
+            headerRow.createCell(10).setCellValue("Contractor (Y/N)");
+            headerRow.createCell(11).setCellValue("Contractor Level");
+            headerRow.createCell(12).setCellValue("New Hiring (Y/N)");
+            headerRow.createCell(13).setCellValue("Refresh/Replacement(Y/N)");
+            headerRow.createCell(14).setCellValue("Labor Hours/Quantities");
+            headerRow.createCell(15).setCellValue("Rate / Unit Price RMB");
+            headerRow.createCell(16).setCellValue("Amount RMB");
+            headerRow.createCell(17).setCellValue("Amount USD");
             // 假设你还要保留原数据列，比如 A(0) ~ P(15)，这里可以根据需求设置更多表头
             // 比如：headerRow.createCell(2).setCellValue("E列内容");
             // 你可以根据 originalValues 的列索引来动态设置表头
@@ -88,16 +102,14 @@ public class ExcelExpander {
 
                 // 写入序号
                 dataRow.createCell(0).setCellValue(rowData.getSystemIndex());
-                // 写入系统类型，如 "1. Android"
-                dataRow.createCell(1).setCellValue(rowData.getSystemIndex() + ". " + rowData.getSystemType());
 
-                // TODO：这里可以继续写入原始数据的其他列
                 // 比如 E列（原数据中的某个重要字段）
                 Map<Integer, String> originalValues = rowData.getOriginalValues();
                 // 假设 E列是原数据中重要的列，可以取出展示
                 String eValue = originalValues.getOrDefault(4, ""); // E列索引是4
-                dataRow.createCell(2).setCellValue(eValue);
-
+                dataRow.createCell(0).setCellValue(eValue);
+                // 写入系统类型，如 "1. Android"
+                dataRow.createCell(1).setCellValue(rowData.getSystemType());
                 // 如果你有更多列要展示，可以类似处理：
                 // dataRow.createCell(3).setCellValue(originalValues.getOrDefault(5, ""));
             }
