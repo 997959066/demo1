@@ -17,7 +17,7 @@ class ExcelExpanderTest {
     void testExpandExcelWithSystemTypes() {
         try {
             // 1. 从 classpath（src/test/resources/）读取输入的 Excel 文件
-            String inputFileName = System.getProperty("user.dir")+"/PET_Project Estimation Tool.xlsm";
+            String inputFileName = System.getProperty("user.dir")+"/Split up the Epic Story tasks.xlsx";
 
             File outputFile = File.createTempFile("expanded-output-", ".xlsx");
             String outputExcelPath = outputFile.getAbsolutePath();

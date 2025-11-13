@@ -16,6 +16,7 @@ public class ExcelExpander {
     public static String Delivery_Manager="Delivery Manager";
     public static String Quality_Assurance="Quality Assurance";
     public static String Android_Developer="Android Developer";
+    public static String Front_end_Developer="Front-end Developer";
     public static String Back_end_Developer="Back-end Developer";
     public static String Product_Designer="Product Designer";
 
@@ -35,23 +36,22 @@ public class ExcelExpander {
                 if(sheetName.equals("BRD & EPIC")) {
 
                     // 遍历每一行（从第2行开始，假设第1行是表头）
-                    for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+                    for (int rowNum = 6; rowNum <= sheet.getLastRowNum(); rowNum++) {
                         Row row = sheet.getRow(rowNum);
                         if (row == null) continue;
 
                         // 读取 E 列（索引4）和 Q 列（索引16）
                         Cell eCell = row.getCell(4);  // E列
-                        Cell eCell13 = row.getCell(13);  // N列
-//                        Cell eCell14 = row.getCell(14);  // 0列
+                        Cell eCell14 = row.getCell(14);  // 0列
                         Cell qCell = row.getCell(15); // P列
 
                         String eValue = getCellValueAsString(eCell);
                         String qValue = getCellValueAsString(qCell);
-                        String qValue13Task = getCellValueAsString(eCell13);
+                        String qValue14Task = getCellValueAsString(eCell14);
 
                         // 条件：E列有值，Q列有值且包含多个系统类型&& !qValue.equals("system type")
                         if (isNotBlank(eValue) && isNotBlank(qValue) && !qValue.equals("system type")) {
-                            qValue=qValue13Task +"&" + qValue+" & Quality Assurance & Product Manager & Delivery Manager & Product Designer";
+                            qValue= qValue14Task +"&" + qValue;
                             // 拆分 Q 列，如 "Android & Front-End & QA" → ["Android Developer", "Front-End Developer", "QA"]
                             List<String> systemTypes = Arrays.stream(qValue.split("&")).map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
                             if (!systemTypes.isEmpty()) {
@@ -174,6 +174,8 @@ public class ExcelExpander {
                         dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
                     }else if (systemType.equals(Product_Designer)){
                         dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
+                    }else if (systemType.equals(Front_end_Developer)){
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$6, 0)");
                     }
                 }
 
