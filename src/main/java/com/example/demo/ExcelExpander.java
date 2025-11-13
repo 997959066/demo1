@@ -11,6 +11,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ExcelExpander {
+//
+    public static String Product_Manager="Product Manager";
+    public static String Delivery_Manager="Delivery Manager";
+    public static String Quality_Assurance="Quality Assurance";
+    public static String Android_Developer="Android Developer";
+    public static String Back_end_Developer="Back-end Developer";
+    public static String Product_Designer="Product Designer";
 
     /**
      * 从输入 Excel 读取数据，根据 Q 列拆分系统类型，生成多行，并写入新 Excel
@@ -73,7 +80,7 @@ public class ExcelExpander {
      */
     private static void writeExpandedExcel(String outputPath, List<ExcelRowData> expandedRows) throws IOException {
         try (Workbook outputWorkbook = new XSSFWorkbook()) {
-            Sheet outputSheet = outputWorkbook.createSheet("Expanded Data");
+            Sheet outputSheet = outputWorkbook.createSheet("Cost Breakdown");
 
             // 创建表头
             Row headerRow0 = outputSheet.createRow(0);
@@ -155,17 +162,17 @@ public class ExcelExpander {
                 if(systemIndex==1){
                     dataRow.createCell(17).setCellValue("1");
                 }else {
-                    if(systemType.equals("Product Manager")){
+                    if(systemType.equals(Product_Manager)){
                         dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$2, 0)");
-                    }else if (systemType.equals("Product Manager")){
+                    }else if (systemType.equals(Delivery_Manager)){
                         dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$3, 0)");
-                    }else if (systemType.equals("Quality Assurance")){
+                    }else if (systemType.equals(Quality_Assurance)){
                         dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$4, 0)");
-                    }else if (systemType.equals("Android Developer")){
+                    }else if (systemType.equals(Android_Developer)){
                         dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
-                    }else if (systemType.equals("Back-end Developer")){
+                    }else if (systemType.equals(Back_end_Developer)){
                         dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
-                    }else if (systemType.equals("Product Designer")){
+                    }else if (systemType.equals(Product_Designer)){
                         dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
                     }
                 }
