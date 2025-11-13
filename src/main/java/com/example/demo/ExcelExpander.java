@@ -86,10 +86,10 @@ public class ExcelExpander {
             headerRow.createCell(6).setCellValue("Asset Function"); // In-House
             headerRow.createCell(7).setCellValue("Team");
             headerRow.createCell(8).setCellValue("Role list");
-            headerRow.createCell(9).setCellValue("Contractor (Y/N)");
+            headerRow.createCell(9).setCellValue("Contractor (Y/N)自动带出列");
             headerRow.createCell(10).setCellValue("Contractor Level");
             headerRow.createCell(11).setCellValue("New Hiring (Y/N)");
-            headerRow.createCell(12).setCellValue("Refresh/Replacement(Y/N)");
+            headerRow.createCell(12).setCellValue("Refresh/Replacement(Y/N) 不填写列");
             headerRow.createCell(13).setCellValue("Labor Hours/Quantities");
             headerRow.createCell(14).setCellValue("Rate / Unit Price RMB");
             headerRow.createCell(15).setCellValue("Amount RMB");
@@ -119,10 +119,30 @@ public class ExcelExpander {
                  //Cost Type
                 String costType = systemIndex==1?"Vendor Service":"Labor";
                 dataRow.createCell(5).setCellValue(costType);
-                //Asset Functio
+                //Asset Function
                 String assetFunction = systemIndex==1?"Vendor Enhance Software":"In-House";
                 dataRow.createCell(6).setCellValue(assetFunction);
+                //Team
+                dataRow.createCell(7).setCellValue("Digital Engineering");
+                //Role list"
+                String role = systemIndex==1?"":systemType;
+                dataRow.createCell(8).setCellValue(role);
+                //Contractor
+                String contractor = systemIndex==1?"":"Y";
+                dataRow.createCell(9).setCellValue(contractor);
+                //Level
+//                String contractorLevel = systemIndex==1?"":"Y";
+                dataRow.createCell(10).setCellValue("Level 4 (5-8Years)");
 
+                //Hiring
+                String hiring = systemIndex==1?"":"Y";
+                dataRow.createCell(11).setCellValue(hiring);
+
+                //空列，不需要生成
+                dataRow.createCell(12).setCellValue("");
+                //Labor Hours/Quantities 带入公式
+
+                dataRow.createCell(13).setCellValue("");
             }
 
             // 自动调整列宽
