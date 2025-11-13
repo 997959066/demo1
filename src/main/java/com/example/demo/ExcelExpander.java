@@ -163,19 +163,19 @@ public class ExcelExpander {
                     dataRow.createCell(17).setCellValue("1");
                 }else {
                     if(systemType.equals(Product_Manager)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$2, 0)");
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$2, 0)");
                     }else if (systemType.equals(Delivery_Manager)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$3, 0)");
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$3, 0)");
                     }else if (systemType.equals(Quality_Assurance)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$4, 0)");
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$4, 0)");
                     }else if (systemType.equals(Android_Developer)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
                     }else if (systemType.equals(Back_end_Developer)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
                     }else if (systemType.equals(Product_Designer)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
                     }else if (systemType.equals(Front_end_Developer)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$6, 0)");
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$6, 0)");
                     }
                 }
 
