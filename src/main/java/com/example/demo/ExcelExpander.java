@@ -76,29 +76,40 @@ public class ExcelExpander {
             Sheet outputSheet = outputWorkbook.createSheet("Expanded Data");
 
             // 创建表头
-            Row headerRow = outputSheet.createRow(0);
-            headerRow.createCell(0).setCellValue("EPIC Story");
-            headerRow.createCell(1).setCellValue("Task / Description");
-            headerRow.createCell(2).setCellValue("CAPEX/OTE");
-            headerRow.createCell(3).setCellValue("Release");
-            headerRow.createCell(4).setCellValue("Vendor/SHDR");
-            headerRow.createCell(5).setCellValue("Cost Type");
-            headerRow.createCell(6).setCellValue("Asset Function"); // In-House
-            headerRow.createCell(7).setCellValue("Team");
-            headerRow.createCell(8).setCellValue("Role list");
-            headerRow.createCell(9).setCellValue("Contractor (Y/N)自动带出列");
-            headerRow.createCell(10).setCellValue("Contractor Level");
-            headerRow.createCell(11).setCellValue("New Hiring (Y/N)");
-            headerRow.createCell(12).setCellValue("Refresh/Replacement(Y/N) 不填写列");
-            headerRow.createCell(13).setCellValue("Labor Hours/Quantities");
-            headerRow.createCell(14).setCellValue("Rate / Unit Price RMB");
-            headerRow.createCell(15).setCellValue("Amount RMB");
-            headerRow.createCell(16).setCellValue("Amount USD");
+            Row headerRow0 = outputSheet.createRow(0);
+            headerRow0.createCell(0).setCellValue("Project Category");
+            Row headerRow1 = outputSheet.createRow(1);
+            headerRow1.createCell(0).setCellValue("N/A");
+
+            Row headerRow = outputSheet.createRow(4);
+            headerRow.createCell(0).setCellValue("BRD Priority");
+            headerRow.createCell(1).setCellValue("BRD Overview");
+            headerRow.createCell(2).setCellValue("BRD Detailed Requirement");
+            headerRow.createCell(3).setCellValue("EPIC Title");
+
+
+            headerRow.createCell(4).setCellValue("EPIC Story");
+            headerRow.createCell(5).setCellValue("Task / Description");
+            headerRow.createCell(6).setCellValue("CAPEX/OTE");
+            headerRow.createCell(7).setCellValue("Release");
+            headerRow.createCell(8).setCellValue("Vendor/SHDR");
+            headerRow.createCell(9).setCellValue("Cost Type");
+            headerRow.createCell(10).setCellValue("Asset Function"); // In-House
+            headerRow.createCell(11).setCellValue("Team");
+            headerRow.createCell(12).setCellValue("Role list");
+            headerRow.createCell(13).setCellValue("Contractor (Y/N)自动带出列");
+            headerRow.createCell(14).setCellValue("Contractor Level");
+            headerRow.createCell(15).setCellValue("New Hiring (Y/N)");
+            headerRow.createCell(16).setCellValue("Refresh/Replacement(Y/N) 不填写列");
+            headerRow.createCell(17).setCellValue("Labor Hours/Quantities");
+            headerRow.createCell(18).setCellValue("Rate / Unit Price RMB");
+            headerRow.createCell(19).setCellValue("Amount RMB");
+            headerRow.createCell(20).setCellValue("Amount USD");
             // 假设你还要保留原数据列，比如 A(0) ~ P(15)，这里可以根据需求设置更多表头
             // 比如：headerRow.createCell(2).setCellValue("E列内容");
             // 你可以根据 originalValues 的列索引来动态设置表头
 
-            int dataRowIndex = 1;
+            int dataRowIndex = 5;
             for (ExcelRowData rowData : expandedRows) {
                 Row dataRow = outputSheet.createRow(dataRowIndex++);
                 int systemIndex = rowData.getSystemIndex();
@@ -106,43 +117,68 @@ public class ExcelExpander {
                 Map<Integer, String> originalValues = rowData.getOriginalValues();
                 // 假设 E列是原数据中重要的列，可以取出展示
                 String eValue = originalValues.getOrDefault(4, ""); // E列索引是4
-                dataRow.createCell(0).setCellValue(eValue);
+                dataRow.createCell(4).setCellValue(eValue);
                 // 写入系统类型，如 "1. Android" //Task / Description
                 String systemType = rowData.getSystemType();
-                dataRow.createCell(1).setCellValue(systemType);
+                dataRow.createCell(5).setCellValue(systemType);
                 String capex =systemType.equals("Delivery Manager")?"OTE":"CAPEX";
-                dataRow.createCell(2).setCellValue(capex);
+                dataRow.createCell(6).setCellValue(capex);
 
-                 dataRow.createCell(3).setCellValue("Release 1");
+                 dataRow.createCell(7).setCellValue("Release 1");
 
-                 dataRow.createCell(4).setCellValue("Vendor");
+                 dataRow.createCell(8).setCellValue("Vendor");
                  //Cost Type
                 String costType = systemIndex==1?"Vendor Service":"Labor";
-                dataRow.createCell(5).setCellValue(costType);
+                dataRow.createCell(9).setCellValue(costType);
                 //Asset Function
                 String assetFunction = systemIndex==1?"Vendor Enhance Software":"In-House";
-                dataRow.createCell(6).setCellValue(assetFunction);
+                dataRow.createCell(10).setCellValue(assetFunction);
                 //Team
-                dataRow.createCell(7).setCellValue("Digital Engineering");
+                dataRow.createCell(11).setCellValue("Digital Engineering");
                 //Role list"
                 String role = systemIndex==1?"":systemType;
-                dataRow.createCell(8).setCellValue(role);
+                dataRow.createCell(12).setCellValue(role);
                 //Contractor
                 String contractor = systemIndex==1?"":"Y";
-                dataRow.createCell(9).setCellValue(contractor);
+                dataRow.createCell(13).setCellValue(contractor);
                 //Level
 //                String contractorLevel = systemIndex==1?"":"Y";
-                dataRow.createCell(10).setCellValue("Level 4 (5-8Years)");
+                dataRow.createCell(14).setCellValue("Level 4 (5-8Years)");
 
                 //Hiring
                 String hiring = systemIndex==1?"":"Y";
-                dataRow.createCell(11).setCellValue(hiring);
+                dataRow.createCell(15).setCellValue(hiring);
 
                 //空列，不需要生成
-                dataRow.createCell(12).setCellValue("");
+                dataRow.createCell(16).setCellValue("");
                 //Labor Hours/Quantities 带入公式
+                if(systemIndex==1){
+                    dataRow.createCell(17).setCellValue("1");
+                }else {
+                    if(systemType.equals("Product Manager")){
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$2, 0)");
+                    }else if (systemType.equals("Product Manager")){
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$3, 0)");
+                    }else if (systemType.equals("Quality Assurance")){
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$4, 0)");
+                    }else if (systemType.equals("Android Developer")){
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
+                    }else if (systemType.equals("Back-end Developer")){
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
+                    }else if (systemType.equals("Product Designer")){
+                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!V:V,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
+                    }
+                }
 
-                dataRow.createCell(13).setCellValue("");
+                //Labor Hours/Quantities 带入公式
+                if(systemIndex==1){
+                    dataRow.createCell(18).setCellValue("1");
+                    dataRow.createCell(18).setCellFormula("INDEX('BRD & EPIC'!AE:AE,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0))");
+                }
+
+
+
+
             }
 
             // 自动调整列宽
