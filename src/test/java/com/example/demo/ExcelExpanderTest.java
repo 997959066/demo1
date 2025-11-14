@@ -16,11 +16,12 @@ class ExcelExpanderTest {
     @Test
     void testExpandExcelWithSystemTypes() {
         try {
-            // 1. 从 classpath（src/test/resources/）读取输入的 Excel 文件
-            String inputFileName = System.getProperty("user.dir")+"/Split up the Epic Story tasks.xlsx";
+            String property = System.getProperty("user.dir");
+            String inputFileName = property+"/Split up the Epic Story tasks.xlsx";
 
             File outputFile = File.createTempFile("expanded-output-", ".xlsx");
-            String outputExcelPath = outputFile.getAbsolutePath();
+            String fileName = outputFile.getName();
+            String outputExcelPath = property+"/src/test/resources/"+fileName;
 
             ExcelExpander.expandAndGenerate(inputFileName, outputExcelPath);
 
