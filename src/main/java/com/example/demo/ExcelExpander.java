@@ -15,9 +15,11 @@ public class ExcelExpander {
     public static String Product_Manager="Product Manager";
     public static String Delivery_Manager="Delivery Manager";
     public static String Quality_Assurance="Quality Assurance";
+    public static String Sr_Quality_Assurance="Sr Quality Assurance";
     public static String Android_Developer="Android Developer";
     public static String Front_end_Developer="Front-end Developer";
     public static String Back_end_Developer="Back-end Developer";
+    public static String SR_Back_end_Developer="SR Back-end Developer";
     public static String Product_Designer="Product Designer";
 
     /**
@@ -28,18 +30,14 @@ public class ExcelExpander {
 
         try (FileInputStream fis = new FileInputStream(inputPath);
              Workbook inputWorkbook = new XSSFWorkbook(fis)) {
-
-            // 遍历所有 Sheet（或者指定 Sheet）
             for (Sheet sheet : inputWorkbook) {
                 String sheetName = sheet.getSheetName();
-                System.out.println("正在处理 Sheet: " + sheetName);
                 if(sheetName.equals("BRD & EPIC")) {
-
+                    System.out.println("正在处理 Sheet: " + sheetName);
                     // 遍历每一行（从第2行开始，假设第1行是表头）
                     for (int rowNum = 6; rowNum <= sheet.getLastRowNum(); rowNum++) {
                         Row row = sheet.getRow(rowNum);
                         if (row == null) continue;
-
                         // 读取 E 列（索引4）和 Q 列（索引16）
                         Cell eCell = row.getCell(4);  // E列
                         Cell eCell14 = row.getCell(14);  // 0列
@@ -49,11 +47,18 @@ public class ExcelExpander {
                         String qValue = getCellValueAsString(qCell);
                         String qValue14Task = getCellValueAsString(eCell14);
 
-                        // 条件：E列有值，Q列有值且包含多个系统类型&& !qValue.equals("system type")
+                        // 条件：E列有值，Q列有值且包含多个系统类型
                         if (isNotBlank(eValue) && isNotBlank(qValue) && !qValue.equals("system type")) {
                             qValue= qValue14Task +"&" + qValue;
-                            // 拆分 Q 列，如 "Android & Front-End & QA" → ["Android Developer", "Front-End Developer", "QA"]
                             List<String> systemTypes = Arrays.stream(qValue.split("&")).map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
+                            //多流出一条
+                            if (systemTypes.contains(Back_end_Developer)) {
+                                systemTypes.add(SR_Back_end_Developer);
+                            }
+                            if (systemTypes.contains(Quality_Assurance)) {
+                                systemTypes.add(Sr_Quality_Assurance);
+                            }
+
                             if (!systemTypes.isEmpty()) {
                                 // 获取原始行所有列的数据（列索引 -> 值）
                                 Map<Integer, String> originalValues = getRowValuesAsMap(row);
@@ -143,14 +148,28 @@ public class ExcelExpander {
                 //Team
                 dataRow.createCell(11).setCellValue("Digital Engineering");
                 //Role list"
-                String role = systemIndex==1?"":systemType;
+//                String role = systemIndex==1?"":systemType;
+                String role =  "";
+                String roleLevel =  "Level 4 (5-8Years)";
+                if(systemIndex!=1){
+                    role=systemType;
+                    if(systemType.equals(Sr_Quality_Assurance)){
+                        role=Quality_Assurance;
+                        roleLevel="Level 3 (8-10Years)";
+                    }
+                    if(systemType.equals(SR_Back_end_Developer)){
+                        role=Back_end_Developer;
+                        roleLevel="Level 3 (8-10Years)";
+                    }
+                }
+
                 dataRow.createCell(12).setCellValue(role);
                 //Contractor
                 String contractor = systemIndex==1?"":"Y";
                 dataRow.createCell(13).setCellValue(contractor);
                 //Level
 //                String contractorLevel = systemIndex==1?"":"Y";
-                dataRow.createCell(14).setCellValue("Level 4 (5-8Years)");
+                dataRow.createCell(14).setCellValue(roleLevel);
 
                 //Hiring
                 String hiring = systemIndex==1?"":"Y";
