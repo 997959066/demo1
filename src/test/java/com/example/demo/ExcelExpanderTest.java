@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ExcelExpanderTest {
 
     String property = System.getProperty("user.dir");
+    String userHome =  System.getProperty("user.home") ;
 
     @Test
     void testExpandExcelWithSystemTypes() {
@@ -18,7 +19,7 @@ class ExcelExpanderTest {
 
             File outputFile = File.createTempFile("expanded-output-", ".xlsx");
 
-            String outputExcelPath = property + "/src/test/resources/" + outputFile.getName();
+            String outputExcelPath = userHome + "/AA/" + outputFile.getName();
 
             ExcelExpander.expandAndGenerate(inputFileName, outputExcelPath);
 
