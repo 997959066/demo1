@@ -105,18 +105,21 @@ public class ExcelExpander {
             headerRow.createCell(6).setCellValue("CAPEX/OTE");
             headerRow.createCell(7).setCellValue("Release");
             headerRow.createCell(8).setCellValue("Vendor/SHDR");
-            headerRow.createCell(9).setCellValue("Cost Type");
-            headerRow.createCell(10).setCellValue("Asset Function"); // In-House
-            headerRow.createCell(11).setCellValue("Team");
-            headerRow.createCell(12).setCellValue("Role list");
-            headerRow.createCell(13).setCellValue("Contractor (Y/N)自动带出列");
-            headerRow.createCell(14).setCellValue("Contractor Level");
-            headerRow.createCell(15).setCellValue("New Hiring (Y/N)");
-            headerRow.createCell(16).setCellValue("Refresh/Replacement(Y/N) 不填写列");
-            headerRow.createCell(17).setCellValue("Labor Hours/Quantities");
-            headerRow.createCell(18).setCellValue("Rate / Unit Price RMB");
-            headerRow.createCell(19).setCellValue("Amount RMB");
-            headerRow.createCell(20).setCellValue("Amount USD");
+            headerRow.createCell(9).setCellValue("Cost Type");//J
+            headerRow.createCell(10).setCellValue("Asset"); //     K
+
+            headerRow.createCell(11).setCellValue("Asset Function"); // In-House L
+            headerRow.createCell(12).setCellValue("Team");//M
+            headerRow.createCell(13).setCellValue("Role list");//N
+            headerRow.createCell(14).setCellValue("Contractor (Y/N)自动带出列");//O
+            headerRow.createCell(15).setCellValue("Contractor Level");//P
+            headerRow.createCell(16).setCellValue("New Hiring (Y/N)");//Q
+            headerRow.createCell(17).setCellValue("Refresh/Replacement(Y/N) 不填写列");//R
+
+            headerRow.createCell(18).setCellValue("Labor Hours/Quantities");//S
+            headerRow.createCell(19).setCellValue("Rate / Unit Price RMB");//T
+            headerRow.createCell(20).setCellValue("Amount RMB");//U
+            headerRow.createCell(21).setCellValue("Amount USD");//V
             // 假设你还要保留原数据列，比如 A(0) ~ P(15)，这里可以根据需求设置更多表头
             // 比如：headerRow.createCell(2).setCellValue("E列内容");
             // 你可以根据 originalValues 的列索引来动态设置表头
@@ -142,11 +145,13 @@ public class ExcelExpander {
                  //Cost Type
                 String costType = systemIndex==1?"Vendor Service":"Labor";
                 dataRow.createCell(9).setCellValue(costType);
+                //Asset
+                dataRow.createCell(10).setCellValue("");
                 //Asset Function
                 String assetFunction = systemIndex==1?"Vendor Enhance Software":"In-House";
-                dataRow.createCell(10).setCellValue(assetFunction);
+                dataRow.createCell(11).setCellValue(assetFunction);
                 //Team
-                dataRow.createCell(11).setCellValue("Digital Engineering");
+                dataRow.createCell(12).setCellValue("Digital Engineering");
                 //Role list"
 //                String role = systemIndex==1?"":systemType;
                 String role =  "";
@@ -163,48 +168,49 @@ public class ExcelExpander {
                     }
                 }
 
-                dataRow.createCell(12).setCellValue(role);
+                dataRow.createCell(13).setCellValue(role);
                 //Contractor
                 String contractor = systemIndex==1?"":"Y";
-                dataRow.createCell(13).setCellValue(contractor);
-                //Level
+                dataRow.createCell(14).setCellValue(contractor);
+                //contractor Level
 //                String contractorLevel = systemIndex==1?"":"Y";
-                dataRow.createCell(14).setCellValue(roleLevel);
+                dataRow.createCell(15).setCellValue(roleLevel);
 
-                //Hiring
+                //New Hiring
                 String hiring = systemIndex==1?"":"Y";
-                dataRow.createCell(15).setCellValue(hiring);
+                dataRow.createCell(16).setCellValue(hiring);
 
-                //空列，不需要生成
-                dataRow.createCell(16).setCellValue("");
-                //Labor Hours/Quantities 带入公式
-                if(systemIndex==1){
-                    dataRow.createCell(17).setCellValue("1");
-                }else {
-                    if(systemType.equals(Product_Manager)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$2, 0)");
-                    }else if (systemType.equals(Delivery_Manager)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$3, 0)");
-                    }else if (systemType.equals(Quality_Assurance) || systemType.equals(Sr_Quality_Assurance)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$4, 0)");
-                    }else if (systemType.equals(Android_Developer)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
-                    }else if (systemType.equals(Back_end_Developer) || systemType.equals(SR_Back_end_Developer)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
-                    }else if (systemType.equals(Product_Designer)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
-                    }else if (systemType.equals(Front_end_Developer)){
-                        dataRow.createCell(17).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$6, 0)");
-                    }
-                }
-
+                //Refresh/Replacement(Y/N) 不填写列
+                dataRow.createCell(17).setCellValue("");
                 //Labor Hours/Quantities 带入公式
                 if(systemIndex==1){
                     dataRow.createCell(18).setCellValue("1");
-                    dataRow.createCell(18).setCellFormula("INDEX('BRD & EPIC'!AE:AE,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0))");
+                }else {
+                    if(systemType.equals(Product_Manager)){
+                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$2, 0)");
+                    }else if (systemType.equals(Delivery_Manager)){
+                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$3, 0)");
+                    }else if (systemType.equals(Quality_Assurance) || systemType.equals(Sr_Quality_Assurance)){
+                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$4, 0)");
+                    }else if (systemType.equals(Android_Developer)){
+                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
+                    }else if (systemType.equals(Back_end_Developer) || systemType.equals(SR_Back_end_Developer)){
+                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
+                    }else if (systemType.equals(Product_Designer)){
+                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
+                    }else if (systemType.equals(Front_end_Developer)){
+                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$6, 0)");
+                    }
                 }
 
-
+                //Rate / Unit Price RMB
+                if(systemIndex==1){
+                    dataRow.createCell(19).setCellValue("1");
+                    dataRow.createCell(19).setCellFormula("INDEX('BRD & EPIC'!AE:AE,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0))");
+                }
+                //Amount RMB 20 U
+                //Amount USD 21 V
+                //Comments W
 
 
             }
