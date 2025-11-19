@@ -93,7 +93,7 @@ public class ExcelExpander {
             Row headerRow1 = outputSheet.createRow(1);
             headerRow1.createCell(0).setCellValue("N/A");
 
-            Row headerRow = outputSheet.createRow(4);
+            Row headerRow = outputSheet.createRow(3);
             headerRow.createCell(0).setCellValue("BRD Priority");
             headerRow.createCell(1).setCellValue("BRD Overview");
             headerRow.createCell(2).setCellValue("BRD Detailed Requirement");
@@ -121,7 +121,7 @@ public class ExcelExpander {
             // 比如：headerRow.createCell(2).setCellValue("E列内容");
             // 你可以根据 originalValues 的列索引来动态设置表头
 
-            int dataRowIndex = 5;
+            int dataRowIndex = 4;
             for (ExcelRowData rowData : expandedRows) {
                 Row dataRow = outputSheet.createRow(dataRowIndex++);
                 int systemIndex = rowData.getSystemIndex();
