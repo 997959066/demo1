@@ -192,8 +192,10 @@ public class ExcelExpander {
                     }else if (systemType.equals(Delivery_Manager)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$3, 0)");
                         dataRow.createCell(18).setCellFormula("DE_Cost!D3");
-                    }else if (systemType.equals(Quality_Assurance) || systemType.equals(Sr_Quality_Assurance)){
+                    }else if (systemType.equals(Quality_Assurance)){
                         dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$4, 0)");
+                    }else if (systemType.equals(Sr_Quality_Assurance)){
+                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$10, 0)");
                     }else if (systemType.equals(Android_Developer)){
                         dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
                     }else if (systemType.equals(Back_end_Developer) || systemType.equals(SR_Back_end_Developer)){
