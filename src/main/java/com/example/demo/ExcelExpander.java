@@ -16,10 +16,10 @@ public class ExcelExpander {
     public static String Delivery_Manager="Delivery Manager";
     public static String Quality_Assurance="Quality Assurance";
     public static String Sr_Quality_Assurance="Sr Quality Assurance";
-    public static String Android_Developer="Android Developer";
+//    public static String Android_Developer="Android Developer";
     public static String Front_end_Developer="Front-end Developer";
     public static String Back_end_Developer="Back-end Developer";
-    public static String SR_Back_end_Developer="SR Back-end Developer";
+//    public static String SR_Back_end_Developer="SR Back-end Developer";
     public static String Product_Designer="Product Designer";
 
     /**
@@ -52,9 +52,9 @@ public class ExcelExpander {
                             qValue= qValue14Task +"&" + qValue;
                             List<String> systemTypes = Arrays.stream(qValue.split("&")).map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
                             //多流出一条
-                            if (systemTypes.contains(Back_end_Developer)) {
-                                systemTypes.add(SR_Back_end_Developer);
-                            }
+//                            if (systemTypes.contains(Back_end_Developer)) {
+//                                systemTypes.add(SR_Back_end_Developer);
+//                            }
                             if (systemTypes.contains(Quality_Assurance)) {
                                 systemTypes.add(Sr_Quality_Assurance);
                             }
@@ -162,8 +162,12 @@ public class ExcelExpander {
                         role=Quality_Assurance;
                         roleLevel="Level 3 (8-10Years)";
                     }
-                    if(systemType.equals(SR_Back_end_Developer)){
+                    if(systemType.equals(Back_end_Developer)){
                         role=Back_end_Developer;
+                        roleLevel="Level 3 (8-10Years)";
+                    }
+                    if(systemType.equals(Front_end_Developer)){
+                        role=Front_end_Developer;
                         roleLevel="Level 3 (8-10Years)";
                     }
                 }
@@ -199,15 +203,15 @@ public class ExcelExpander {
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$10, 0)");
                         dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$10, 0)");
 
-                    }else if (systemType.equals(Android_Developer)){
+                    }/*else if (systemType.equals(Android_Developer)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
                         dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$5, 0)");
 
-                    }else if (systemType.equals(Back_end_Developer) || systemType.equals(SR_Back_end_Developer)){
+                    }*//*else if (systemType.equals(Back_end_Developer) || systemType.equals(SR_Back_end_Developer)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
                         dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$7, 0)");
 
-                    }else if (systemType.equals(Product_Designer)){
+                    }*/else if (systemType.equals(Product_Designer)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
                         dataRow.createCell(18).setCellFormula("DE_Cost!D9");
                     }else if (systemType.equals(Front_end_Developer)){

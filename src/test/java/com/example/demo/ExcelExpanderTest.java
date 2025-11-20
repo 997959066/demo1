@@ -19,7 +19,7 @@ class ExcelExpanderTest {
 
             File outputFile = File.createTempFile("expanded-output-", ".xlsx");
 
-            String outputExcelPath = userHome + "/AA/" + outputFile.getName();
+            String outputExcelPath = userHome + "/Downloads/AA/" + outputFile.getName();
 
             ExcelExpander.expandAndGenerate(inputFileName, outputExcelPath);
 
