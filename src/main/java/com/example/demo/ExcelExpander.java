@@ -156,29 +156,47 @@ public class ExcelExpander {
 //                String role = systemIndex==1?"":systemType;
                 String role =  "";
                 String roleLevel =  "Level 4 (5-8Years)";
+
                 if(systemIndex!=1){
-                    role=systemType;
+                    if(systemType.equals(Product_Designer)){
+                        role=Product_Designer;
+                          roleLevel =  "Level 6 (1-3Years）";
+                    }
+                    if(systemType.equals(Delivery_Manager)){
+                        role=Delivery_Manager;
+                    }
+                    if(systemType.equals(Quality_Assurance)){
+                        role=Quality_Assurance;
+                        roleLevel="Level 5 (3-5Years）";
+                    }
                     if(systemType.equals(Sr_Quality_Assurance)){
                         role=Quality_Assurance;
-                        roleLevel="Level 3 (8-10Years)";
+                        roleLevel="Level 4 (5-8Years)";
+                    }
+                    if(systemType.equals(Front_end_Developer)){
+                        role=Front_end_Developer;
+                        roleLevel="Level 4 (5-8Years)";
                     }
                     if(systemType.equals(Back_end_Developer)){
                         role=Back_end_Developer;
                         roleLevel="Level 3 (8-10Years)";
                     }
-                    if(systemType.equals(Front_end_Developer)){
-                        role=Front_end_Developer;
-                        roleLevel="Level 3 (8-10Years)";
+                    if(systemType.equals(Product_Manager)){
+                        role=Product_Manager;
                     }
+                    dataRow.createCell(13).setCellValue(role);
+
+
+                    dataRow.createCell(15).setCellValue(roleLevel);
                 }
 
-                dataRow.createCell(13).setCellValue(role);
+
                 //Contractor
                 String contractor = systemIndex==1?"":"Y";
                 dataRow.createCell(14).setCellValue(contractor);
                 //contractor Level
 //                String contractorLevel = systemIndex==1?"":"Y";
-                dataRow.createCell(15).setCellValue(roleLevel);
+
 
                 //New Hiring
                 String hiring = systemIndex==1?"":"Y";
@@ -207,11 +225,11 @@ public class ExcelExpander {
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
                         dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$5, 0)");
 
-                    }*//*else if (systemType.equals(Back_end_Developer) || systemType.equals(SR_Back_end_Developer)){
+                    }*/else if (systemType.equals(Back_end_Developer)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
                         dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$7, 0)");
 
-                    }*/else if (systemType.equals(Product_Designer)){
+                    }else if (systemType.equals(Product_Designer)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
                         dataRow.createCell(18).setCellFormula("DE_Cost!D9");
                     }else if (systemType.equals(Front_end_Developer)){
@@ -228,6 +246,10 @@ public class ExcelExpander {
                     dataRow.createCell(19).setCellFormula("INDEX('BRD & EPIC'!AE:AE, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0))");
                 }
                 //Amount RMB 20 U
+//                if(systemIndex!=1){
+//                    dataRow.createCell(20).setCellFormula("T"+dataRowIndex+"*S"+dataRowIndex);
+//                    dataRow.createCell(21).setCellFormula("=U"+dataRowIndex+"/'Tool Setup'!$B$3");
+//                }
                 //Amount USD 21 V
                 //Comments W
 
