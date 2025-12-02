@@ -21,7 +21,8 @@ class ExcelExpanderTest {
 
             String outputExcelPath = userHome + "/Downloads/AA/" + outputFile.getName();
 
-            ExcelExpander.expandAndGenerate(inputFileName, outputExcelPath);
+            String sheetNameTarget = "BRD & EPIC";
+            ExcelExpander.expandAndGenerate(sheetNameTarget,inputFileName, outputExcelPath);
 
             // 5. 验证输出文件已生成
             assertTrue(outputFile.exists(), "❌ 输出 Excel 文件应该被生成: " + outputExcelPath);
