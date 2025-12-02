@@ -25,14 +25,14 @@ public class ExcelExpander {
     /**
      * 从输入 Excel 读取数据，根据 Q 列拆分系统类型，生成多行，并写入新 Excel
      */
-    public static void expandAndGenerate(String inputPath, String outputPath) throws IOException {
+    public static void expandAndGenerate(String sheetNameTarget,String inputPath, String outputPath) throws IOException {
         List<ExcelRowData> allExpandedRows = new ArrayList<>();
 
         try (FileInputStream fis = new FileInputStream(inputPath);
              Workbook inputWorkbook = new XSSFWorkbook(fis)) {
             for (Sheet sheet : inputWorkbook) {
                 String sheetName = sheet.getSheetName();
-                if(sheetName.equals("BRD & EPIC")) {
+                if(sheetName.equals(sheetNameTarget)) {
                     System.out.println("正在处理 Sheet: " + sheetName);
                     // 遍历每一行（从第2行开始，假设第1行是表头）
                     for (int rowNum = 6; rowNum <= sheet.getLastRowNum(); rowNum++) {
@@ -105,7 +105,7 @@ public class ExcelExpander {
             headerRow.createCell(6).setCellValue("CAPEX/OTE");
             headerRow.createCell(7).setCellValue("Release");
             headerRow.createCell(8).setCellValue("Vendor/SHDR");
-            headerRow.createCell(9).setCellValue("Cost Type");//J
+            headerRow.createCell(9).setCellValue("Cost Type");//
             headerRow.createCell(10).setCellValue("Asset"); //     K
 
             headerRow.createCell(11).setCellValue("Asset Function"); // In-House L
@@ -150,8 +150,7 @@ public class ExcelExpander {
                 //Asset Function
                 String assetFunction = systemIndex==1?"Vendor Enhance Software":"In-House";
                 dataRow.createCell(11).setCellValue(assetFunction);
-                //Team
-                dataRow.createCell(12).setCellValue("Digital Engineering");
+
                 //Role list"
 //                String role = systemIndex==1?"":systemType;
                 String role =  "";
@@ -161,28 +160,40 @@ public class ExcelExpander {
                     if(systemType.equals(Product_Designer)){
                         role=Product_Designer;
                           roleLevel =  "Level 6 (1-3Years）";
+                        dataRow.createCell(12).setCellValue("Digital Product");
                     }
                     if(systemType.equals(Delivery_Manager)){
                         role=Delivery_Manager;
+                        //Team
+                        dataRow.createCell(12).setCellValue("Digital Engineering");
                     }
                     if(systemType.equals(Quality_Assurance)){
                         role=Quality_Assurance;
                         roleLevel="Level 5 (3-5Years）";
+                        //Team
+                        dataRow.createCell(12).setCellValue("Digital Engineering");
                     }
                     if(systemType.equals(Sr_Quality_Assurance)){
                         role=Quality_Assurance;
                         roleLevel="Level 4 (5-8Years)";
+                        //Team
+                        dataRow.createCell(12).setCellValue("Digital Engineering");
                     }
                     if(systemType.equals(Front_end_Developer)){
                         role=Front_end_Developer;
                         roleLevel="Level 4 (5-8Years)";
+                        //Team
+                        dataRow.createCell(12).setCellValue("Digital Engineering");
                     }
                     if(systemType.equals(Back_end_Developer)){
                         role=Back_end_Developer;
                         roleLevel="Level 3 (8-10Years)";
+                        //Team
+                        dataRow.createCell(12).setCellValue("Digital Engineering");
                     }
                     if(systemType.equals(Product_Manager)){
                         role=Product_Manager;
+                        dataRow.createCell(12).setCellValue("Digital Product");
                     }
                     dataRow.createCell(13).setCellValue(role);
 
@@ -210,16 +221,16 @@ public class ExcelExpander {
                 }else {
                     if(systemType.equals(Product_Manager)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$2, 0)");
-                        dataRow.createCell(18).setCellFormula("DE_Cost!D2");
+                        createFormulaCell(dataRow, 18, "DE_Cost!D2");
                     }else if (systemType.equals(Delivery_Manager)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$3, 0)");
-                        dataRow.createCell(18).setCellFormula("DE_Cost!D3");
+                        createFormulaCell(dataRow, 18, "DE_Cost!D3");
                     }else if (systemType.equals(Quality_Assurance)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$4, 0)");
-                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$4, 0)");
+                        createFormulaCell(dataRow, 18, "ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$4, 0)");
                     }else if (systemType.equals(Sr_Quality_Assurance)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$10, 0)");
-                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$10, 0)");
+                        createFormulaCell(dataRow, 18, "ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$10, 0)");
 
                     }/*else if (systemType.equals(Android_Developer)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$5, 0)");
@@ -227,14 +238,14 @@ public class ExcelExpander {
 
                     }*/else if (systemType.equals(Back_end_Developer)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$7, 0)");
-                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$7, 0)");
+                        createFormulaCell(dataRow, 18, "ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$7, 0)");
 
                     }else if (systemType.equals(Product_Designer)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$9, 0)");
-                        dataRow.createCell(18).setCellFormula("DE_Cost!D9");
+                        createFormulaCell(dataRow, 18, "DE_Cost!D9");
                     }else if (systemType.equals(Front_end_Developer)){
 //                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0)) * DE_Cost!$C$6, 0)");
-                        dataRow.createCell(18).setCellFormula("ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$6, 0)");
+                        createFormulaCell(dataRow, 18, "ROUNDUP(INDEX('BRD & EPIC'!T:T, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0)) * DE_Cost!$C$6, 0)");
 
                     }
                 }
@@ -243,7 +254,7 @@ public class ExcelExpander {
                 if(systemIndex==1){
                     dataRow.createCell(19).setCellValue("1");
 //                    dataRow.createCell(19).setCellFormula("INDEX('BRD & EPIC'!AE:AE,MATCH(TEXTBEFORE($E"+dataRowIndex+",\" \")&\"*\",'BRD & EPIC'!E:E,0))");
-                    dataRow.createCell(19).setCellFormula("INDEX('BRD & EPIC'!AE:AE, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0))");
+                    createFormulaCell(dataRow, 19, "INDEX('BRD & EPIC'!AE:AE, MATCH(TRUE, LEFT(TRIM('BRD & EPIC'!E:E), LEN(TEXTBEFORE($E"+dataRowIndex+",\" \"))) = TEXTBEFORE($E"+dataRowIndex+",\" \"), 0))");
                 }
                 //Amount RMB 20 U
 //                if(systemIndex!=1){
@@ -266,6 +277,15 @@ public class ExcelExpander {
                 outputWorkbook.write(fos);
             }
         }
+    }
+
+    private static void createFormulaCell(Row row, int column, String formula) {
+        Cell cell = row.createCell(column);
+        cell.setCellFormula(formula);
+        CellStyle style = row.getSheet().getWorkbook().createCellStyle();
+        DataFormat format = row.getSheet().getWorkbook().createDataFormat();
+        style.setDataFormat(format.getFormat("0")); // Integer format 它的作用是设置单元格的显示格式为不带小数点的整数。如果单元格的计算结果是 18.5，它会显示为 19。
+        cell.setCellStyle(style);
     }
 
     /**
